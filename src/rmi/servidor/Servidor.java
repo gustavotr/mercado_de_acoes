@@ -13,6 +13,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 
 /**
  *
@@ -24,6 +25,11 @@ public class Servidor {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        
+        JFrame j = new JFrame("Servidor");
+        j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        j.setBounds(0, 0, 800, 600);
+        j.setVisible(true);
         
         try {
             Registry r = LocateRegistry.createRegistry(2024);         
