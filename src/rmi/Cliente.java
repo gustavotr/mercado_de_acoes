@@ -6,15 +6,14 @@
 
 package rmi;
 
-import java.rmi.Remote;
-import java.rmi.RemoteException;
-
 /**
  *
  * @author a1097075
  */
-public interface InterfaceCli extends Remote{
+public class Cliente {
     
-    public void echo(String str) throws RemoteException;
+    public static void main(String[] args) {
+        
+    }
     
 }
