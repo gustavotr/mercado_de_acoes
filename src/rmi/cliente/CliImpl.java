@@ -17,7 +17,10 @@ import rmi.InterfaceServ;
 public class CliImpl implements InterfaceCli{
     
     private InterfaceServ interfaceServ;
-    private String stringRecebida;
+
+    public CliImpl(InterfaceServ interfaceServ) {
+        this.interfaceServ = interfaceServ;
+    }   
 
     @Override
     public void echo(String str) throws RemoteException {
