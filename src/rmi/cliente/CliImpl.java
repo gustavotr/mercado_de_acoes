@@ -4,9 +4,11 @@
  * and open the template in the editor.
  */
 
-package rmi;
+package rmi.cliente;
 
 import java.rmi.RemoteException;
+import rmi.InterfaceCli;
+import rmi.InterfaceServ;
 
 /**
  *
