@@ -16,14 +16,13 @@ import rmi.InterfaceServ;
  *
  * @author a1097075
  */
-public class Cliente {
+public class Cliente{
     
     public static void main(String[] args) throws RemoteException, NotBoundException {     
             
         Registry r = LocateRegistry.getRegistry(1099);        
         InterfaceServ servidor = (InterfaceServ) r.lookup("servidor");
-        CliImpl cliente = new CliImpl();
-        servidor.chamar("Gustavo", cliente);    
+        CliImpl cliente = new CliImpl(servidor);       
     }
     
 }
