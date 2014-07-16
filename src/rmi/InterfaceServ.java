@@ -13,8 +13,7 @@ import java.rmi.RemoteException;
  *
  * @author a1097075
  */
-public interface InterfaceServ extends Remote{
- 
+public interface InterfaceServ extends Remote{ 
     
-    public void chamar(String nomeCliente, InterfaceCli interfaceCliente) throws RemoteException;;
+    public void chamar(String nomeCliente, InterfaceCli interfaceCliente) throws RemoteException;
 }

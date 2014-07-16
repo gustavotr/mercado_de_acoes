@@ -6,8 +6,9 @@
 
 package rmi.servidor;
 
-import java.rmi.AccessException;
+import java.net.MalformedURLException;
 import java.rmi.AlreadyBoundException;
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -23,23 +24,21 @@ public class Servidor {
 
     /**
      * @param args the command line arguments
+     * @throws java.rmi.RemoteException
+     * @throws java.net.MalformedURLException
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RemoteException, MalformedURLException {
         
         JFrame j = new JFrame("Servidor");
         j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         j.setBounds(0, 0, 800, 600);
         j.setVisible(true);
         
-        try {
-            Registry r = LocateRegistry.createRegistry(2024);         
-            ServImpl serv = new ServImpl();
-            r.bind("servidor", serv);
-        } catch (RemoteException ex) {
-            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (AlreadyBoundException ex) {
-            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
+        Registry r = LocateRegistry.createRegistry(1099);         
+        ServImpl serv = new ServImpl();            
+        Naming.rebind("servidor", serv);
+       
         
     }
     

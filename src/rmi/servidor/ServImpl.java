@@ -7,6 +7,7 @@
 package rmi.servidor;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import rmi.InterfaceCli;
 import rmi.InterfaceServ;
 
@@ -14,18 +15,15 @@ import rmi.InterfaceServ;
  *
  * @author a1097075
  */
-public class ServImpl implements InterfaceServ{
+public class ServImpl extends UnicastRemoteObject implements InterfaceServ{
     
-    private String nomeCliente;
-    private InterfaceCli interfaceCli;
-
-    @Override
-    public void chamar(String nomeCliente, InterfaceCli interfaceCli) throws RemoteException {
-        this.interfaceCli = interfaceCli;
-        this.nomeCliente = nomeCliente;
-        interfaceCli.echo("Testandoooooo");        
+    
+    public ServImpl() throws RemoteException{        
     }
-
     
+    @Override
+    public void chamar(String nomeCliente, InterfaceCli interfaceCli) throws RemoteException {       
+        interfaceCli.echo("Testandoooooo");        
+    }   
     
 }
