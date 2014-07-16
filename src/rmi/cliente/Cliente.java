@@ -10,8 +10,6 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import rmi.InterfaceServ;
 
 /**
@@ -20,21 +18,12 @@ import rmi.InterfaceServ;
  */
 public class Cliente {
     
-    public static void main(String[] args) {
-        try {
-        
+    public static void main(String[] args) throws RemoteException, NotBoundException {     
             
-            Registry r = LocateRegistry.getRegistry(2024);        
-            CliImpl cli = new CliImpl((InterfaceServ) r.lookup("servidor"));
-            cli.chamar("Gustavo");
-        
-        
-        
-        } catch (RemoteException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NotBoundException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Registry r = LocateRegistry.getRegistry(1099);        
+        InterfaceServ servidor = (InterfaceServ) r.lookup("servidor");
+        CliImpl cliente = new CliImpl();
+        servidor.chamar("Gustavo", cliente);    
     }
     
 }
