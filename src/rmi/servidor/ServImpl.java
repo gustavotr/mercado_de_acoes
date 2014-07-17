@@ -40,12 +40,12 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ{
 
     @Override
     public void comprar(InterfaceCli interfaceCliente, String empresa, int quantidade, double precoDeCompra) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println(quantidade + " ações compradas da " + empresa + " por R$" + precoDeCompra);
     }
 
     @Override
     public void vender(InterfaceCli interfaceCliente, String empresa, int quantidade, double precoDeVenda) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println(quantidade + " ações vendidas da " + empresa + " por R$" + precoDeVenda);
     }
 
     @Override
