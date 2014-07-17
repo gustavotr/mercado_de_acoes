@@ -29,12 +29,6 @@ public class Servidor {
      */
     public static void main(String[] args) throws RemoteException, MalformedURLException {
         
-        JFrame j = new JFrame("Servidor");
-        j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        j.setBounds(0, 0, 800, 600);
-        j.setVisible(true);
-        
-        
         Registry r = LocateRegistry.createRegistry(1099);         
         ServImpl serv = new ServImpl();            
         Naming.rebind("servidor", serv);

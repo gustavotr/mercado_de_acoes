@@ -27,7 +27,7 @@ public class Empresa {
         
         Random rnd = new Random();
         
-        this.precoMedio = rnd.nextDouble()*100;
+        this.precoMedio = (double) rnd.nextInt(10000) / 100;
         
         this.quantidade = rnd.nextInt(10) + 1;
         
@@ -35,7 +35,18 @@ public class Empresa {
             acoes.add(new Acao(precoMedio));
         }
     }
-    
+
+    public String getNome() {
+        return nome;
+    }
+
+    public double getPrecoMedio() {
+        return precoMedio;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }  
     
     
 }
