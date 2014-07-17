@@ -26,6 +26,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import rmi.InterfaceCli;
 import rmi.InterfaceServ;
 
@@ -65,7 +67,8 @@ public class CliImpl extends UnicastRemoteObject implements InterfaceCli{
         
         String [] nomeDasColunas = {"Empresa", "Número de ações", "Valor"};
         
-        JTable tabelaDoServidor = new JTable(monitor, nomeDasColunas);        
+        TableModel tabelaDoServidorModel = new DefaultTableModel(monitor, nomeDasColunas);
+        JTable tabelaDoServidor = new JTable(tabelaDoServidorModel);        
         JScrollPane scrollPaneDoServidor = new JScrollPane(tabelaDoServidor);
         tabelaDoServidor.setFillsViewportHeight(true);
         
@@ -106,7 +109,8 @@ public class CliImpl extends UnicastRemoteObject implements InterfaceCli{
         
         String [] nomeDasColunasCliente = {"Minhas ações", "Número de ações", "Valor"};
         
-        JTable tabelaDoCliente = new JTable(monitor, nomeDasColunasCliente);
+        TableModel tabelaDoClienteModel = new DefaultTableModel(nomeDasColunasCliente, 0);        
+        JTable tabelaDoCliente = new JTable(tabelaDoClienteModel);
         JScrollPane scrollPaneDoCliente = new JScrollPane(tabelaDoCliente);
         tabelaDoCliente.setFillsViewportHeight(true);
         
