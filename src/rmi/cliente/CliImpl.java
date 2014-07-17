@@ -180,18 +180,14 @@ public class CliImpl extends UnicastRemoteObject implements InterfaceCli{
     }
 
     @Override
-    public void gerarMonitor(ArrayList<String> dados) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void notificar(String notificacao, Object[] obj) throws RemoteException {
+        if(notificacao.equals("Ação comprada!")){
+            String empresa = (String) obj[0];
+            int quantidade = (int) obj[1];
+            double preco = (double) obj[2];
+        }
     }
 
-    @Override
-    public void notificar(String empresa, double valorDaAcao, int quantidade) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void notificar(String echo) throws RemoteException {
-        JOptionPane.showMessageDialog(jFrame,echo);
-    }
+    
     
 }
