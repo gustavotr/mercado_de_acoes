@@ -21,6 +21,7 @@ import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -40,9 +41,12 @@ public class CliImpl extends UnicastRemoteObject implements InterfaceCli{
     private JFrame jFrame;
     private Object [] [] monitor;
     private InterfaceServ servidor;
+    private JTable tabelaDoCliente;
+    private JTable tabelaDoServidor;
+    private InterfaceCli cliente;
         
     public CliImpl(InterfaceServ servidor) throws RemoteException {
-        
+        this.cliente = this;
         this.servidor = servidor;
         monitor = servidor.listar();
         
@@ -68,7 +72,7 @@ public class CliImpl extends UnicastRemoteObject implements InterfaceCli{
         String [] nomeDasColunas = {"Empresa", "Número de ações", "Valor"};
         
         TableModel tabelaDoServidorModel = new DefaultTableModel(monitor, nomeDasColunas);
-        JTable tabelaDoServidor = new JTable(tabelaDoServidorModel);        
+        tabelaDoServidor = new JTable(tabelaDoServidorModel);        
         JScrollPane scrollPaneDoServidor = new JScrollPane(tabelaDoServidor);
         tabelaDoServidor.setFillsViewportHeight(true);
         
@@ -78,9 +82,30 @@ public class CliImpl extends UnicastRemoteObject implements InterfaceCli{
         comprar.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e) {                
+            public void actionPerformed(ActionEvent e) { 
+                int row = tabelaDoServidor.getSelectedRow();                
+               String empresa = (String) tabelaDoServidor.getValueAt(row, 0);                
+                
+               String temp = JOptionPane.showInputDialog(jFrame,
+                        "Quantas ações da " + empresa + " deseja comprar?", null);
                
-            }
+               int quantidade = Integer.parseInt(temp);
+               
+               temp = JOptionPane.showInputDialog(jFrame,
+                        "Quanto deseja pagar pelas ações?", null);
+               
+               double preco = Double.parseDouble(temp);
+               
+               int resposta = JOptionPane.showConfirmDialog(jFrame,quantidade + " ações da " + empresa + " para serem compradas por R$" + preco);
+               
+               if(resposta == JOptionPane.YES_OPTION){
+                   try {
+                       servidor.comprar(cliente, empresa, quantidade, preco);
+                   } catch (RemoteException ex) {
+                       Logger.getLogger(CliImpl.class.getName()).log(Level.SEVERE, null, ex);
+                   }
+               }
+            }            
         });        
         
         JButton monitorar = new JButton("Monitorar");
@@ -110,18 +135,39 @@ public class CliImpl extends UnicastRemoteObject implements InterfaceCli{
         String [] nomeDasColunasCliente = {"Minhas ações", "Número de ações", "Valor"};
         
         TableModel tabelaDoClienteModel = new DefaultTableModel(nomeDasColunasCliente, 0);        
-        JTable tabelaDoCliente = new JTable(tabelaDoClienteModel);
+        tabelaDoCliente = new JTable(tabelaDoClienteModel);
         JScrollPane scrollPaneDoCliente = new JScrollPane(tabelaDoCliente);
         tabelaDoCliente.setFillsViewportHeight(true);
         
         painelDoCliente.add(scrollPaneDoCliente); 
         
-         JButton vender = new JButton("Vender");
+        JButton vender = new JButton("Vender");
         vender.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e) {                
+            public void actionPerformed(ActionEvent e) {
+               int row = tabelaDoCliente.getSelectedRow();                
+               String empresa = (String) tabelaDoCliente.getValueAt(row, 1);                
+                
+               String temp = JOptionPane.showInputDialog(jFrame,
+                        "Quantas ações da " + empresa + " deseja vender?", null);
                
+               int quantidade = Integer.parseInt(temp);
+               
+               temp = JOptionPane.showInputDialog(jFrame,
+                        "Qual o preço das ações a serem vendidas?", null);
+               
+               double preco = Double.parseDouble(temp);
+               
+               int resposta = JOptionPane.showConfirmDialog(jFrame,quantidade + " ações da " + empresa + " para serem vendidas por R$" + preco);
+               
+               if(resposta == JOptionPane.YES_OPTION){
+                   try {
+                       servidor.vender(cliente, empresa, quantidade, preco);
+                   } catch (RemoteException ex) {
+                       Logger.getLogger(CliImpl.class.getName()).log(Level.SEVERE, null, ex);
+                   }
+               }
             }
         });
         
