@@ -41,12 +41,13 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ{
     @Override
     public void comprar(InterfaceCli interfaceCliente, String empresa, int quantidade, double precoDeCompra) throws RemoteException {
         System.out.println(quantidade + " ações compradas da " + empresa + " por R$" + precoDeCompra);
-        //interfaceCliente.notificar("Ação comprada!");
+        interfaceCliente.notificar("Ação comprada!");
     }
 
     @Override
     public void vender(InterfaceCli interfaceCliente, String empresa, int quantidade, double precoDeVenda) throws RemoteException {
         System.out.println(quantidade + " ações vendidas da " + empresa + " por R$" + precoDeVenda);
+        interfaceCliente.notificar("Ação vendida!");
     }
 
     @Override
