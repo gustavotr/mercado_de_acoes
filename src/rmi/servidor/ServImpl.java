@@ -8,6 +8,7 @@ package rmi.servidor;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import rmi.InterfaceCli;
 import rmi.InterfaceServ;
 
@@ -17,13 +18,42 @@ import rmi.InterfaceServ;
  */
 public class ServImpl extends UnicastRemoteObject implements InterfaceServ{
     
+    private ArrayList<Empresa> mercadoDeAcoes;
     
-    public ServImpl() throws RemoteException{        
+    
+    public ServImpl() throws RemoteException{  
+        
+        mercadoDeAcoes = new ArrayList<>();
+        
+        mercadoDeAcoes.add(new Empresa("Tim"));
+        mercadoDeAcoes.add(new Empresa("Claro"));
+        mercadoDeAcoes.add(new Empresa("Vivo"));
+        mercadoDeAcoes.add(new Empresa("Oi"));        
+        
+    }
+
+    @Override
+    public void comprar(InterfaceCli interfaceCliente, String empresa, int quantidade, double precoDeCompra) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void vender(InterfaceCli interfaceCliente, String empresa, int quantidade, double precoDeVenda) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void monitorar(InterfaceCli interfaceCliente, String empresa) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void listar(InterfaceCli interfaceCliente) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    @Override
-    public void chamar(String nomeCliente, InterfaceCli interfaceCli) throws RemoteException {       
-        interfaceCli.echo("Olá " + nomeCliente);        
-    }   
+    
+    
+    
     
 }

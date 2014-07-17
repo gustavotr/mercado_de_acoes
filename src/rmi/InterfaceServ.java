@@ -15,5 +15,9 @@ import java.rmi.RemoteException;
  */
 public interface InterfaceServ extends Remote{ 
     
-    public void chamar(String nomeCliente, InterfaceCli interfaceCliente) throws RemoteException;
+    public void comprar(InterfaceCli interfaceCliente, String empresa, int quantidade, double precoDeCompra) throws RemoteException;
+    public void vender(InterfaceCli interfaceCliente, String empresa, int quantidade, double precoDeVenda) throws RemoteException;
+    public void monitorar(InterfaceCli interfaceCliente, String empresa) throws RemoteException;
+    public void listar(InterfaceCli interfaceCliente) throws RemoteException;
+    
 }
