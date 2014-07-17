@@ -6,8 +6,6 @@
 
 package rmi.cliente;
 
-import java.awt.Component;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,7 +15,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,8 +22,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SpringLayout;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import rmi.InterfaceCli;
@@ -192,6 +187,11 @@ public class CliImpl extends UnicastRemoteObject implements InterfaceCli{
     @Override
     public void notificar(String empresa, double valorDaAcao, int quantidade) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void notificar(String echo) throws RemoteException {
+        JOptionPane.showMessageDialog(jFrame,echo);
     }
     
 }

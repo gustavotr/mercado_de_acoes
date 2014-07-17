@@ -18,5 +18,6 @@ public interface InterfaceCli extends Remote{
     
     public void gerarMonitor(ArrayList<String> dados) throws RemoteException;
     public void notificar(String empresa, double valorDaAcao, int quantidade) throws RemoteException;
+    public void notificar(String echo) throws RemoteException;
     
 }
