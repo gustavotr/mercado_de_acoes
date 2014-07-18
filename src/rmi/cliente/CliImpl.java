@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package rmi.cliente;
 
 import java.awt.GridLayout;
@@ -31,149 +30,158 @@ import rmi.InterfaceServ;
  *
  * @author a1097075
  */
-public class CliImpl extends UnicastRemoteObject implements InterfaceCli{
-    
+public class CliImpl extends UnicastRemoteObject implements InterfaceCli {
+
     private JFrame jFrame;
-    private Object [] [] monitor;
+    private Object[][] monitor;
     private InterfaceServ servidor;
     private JTable tabelaDoCliente;
     private JTable tabelaDoServidor;
     private InterfaceCli cliente;
-        
+
     public CliImpl(InterfaceServ servidor) throws RemoteException {
         this.cliente = this;
         this.servidor = servidor;
         monitor = servidor.listar();
-        
+
         initComponents();
-        
-    }      
-       
-    public void initComponents(){
+
+    }
+
+    public void initComponents() {
         jFrame = new JFrame("Cliente");
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setBounds(0, 0, 800, 600);
         jFrame.setLayout(new GridLayout(1, 2));
         jFrame.setVisible(true);
-                 
+
         /* ------------ Area do Servidor ---------------- */
-                       
+
         JPanel painelDoServidor = new JPanel();
         painelDoServidor.setLayout(new BoxLayout(painelDoServidor, BoxLayout.Y_AXIS));
-        
+
         JLabel areaDoServidor = new JLabel("Ações do Servidor");
         painelDoServidor.add(areaDoServidor);
-        
-        String [] nomeDasColunas = {"Empresa", "Número de ações", "Valor"};
-        
+
+        String[] nomeDasColunas = {"Empresa", "Número de ações", "Valor"};
+
         TableModel tabelaDoServidorModel = new DefaultTableModel(monitor, nomeDasColunas);
-        tabelaDoServidor = new JTable(tabelaDoServidorModel);        
+        tabelaDoServidor = new JTable(tabelaDoServidorModel);
         JScrollPane scrollPaneDoServidor = new JScrollPane(tabelaDoServidor);
         tabelaDoServidor.setFillsViewportHeight(true);
-        
+
         painelDoServidor.add(scrollPaneDoServidor);
-        
+
         JButton comprar = new JButton("Comprar");
         comprar.addActionListener(new ActionListener() {
-
             @Override
-            public void actionPerformed(ActionEvent e) { 
-                int row = tabelaDoServidor.getSelectedRow();                
-               String empresa = (String) tabelaDoServidor.getValueAt(row, 0);                
-                
-               String temp = JOptionPane.showInputDialog(jFrame,
+            public void actionPerformed(ActionEvent e) {
+                int row = tabelaDoServidor.getSelectedRow();
+                String empresa = (String) tabelaDoServidor.getValueAt(row, 0);
+
+                String temp = JOptionPane.showInputDialog(jFrame,
                         "Quantas ações da " + empresa + " deseja comprar?", null);
-               
-               int quantidade = Integer.parseInt(temp);
-               
-               temp = JOptionPane.showInputDialog(jFrame,
-                        "Quanto deseja pagar pelas ações?", null);
-               
-               double preco = Double.parseDouble(temp);
-               
-               int resposta = JOptionPane.showConfirmDialog(jFrame,quantidade + " ações da " + empresa + " para serem compradas por R$" + preco);
-               
-               if(resposta == JOptionPane.YES_OPTION){
-                   try {
-                       servidor.comprar(cliente, empresa, quantidade, preco);
-                   } catch (RemoteException ex) {
-                       Logger.getLogger(CliImpl.class.getName()).log(Level.SEVERE, null, ex);
-                   }
-               }
-            }            
-        });        
-        
-        JButton monitorar = new JButton("Monitorar");
-        monitorar.addActionListener(new ActionListener() {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {                
-               
+                int quantidade = Integer.parseInt(temp);
+
+                temp = JOptionPane.showInputDialog(jFrame,
+                        "Quanto deseja pagar pelas ações?", null);
+
+                double preco = Double.parseDouble(temp);
+
+                int resposta = JOptionPane.showConfirmDialog(jFrame, quantidade + " ações da " + empresa + " para serem compradas por R$" + preco);
+
+                if (resposta == JOptionPane.YES_OPTION) {
+                    try {
+                        servidor.comprar(cliente, empresa, quantidade, preco);
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(CliImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             }
         });
-       
+
+        JButton monitorar = new JButton("Monitorar");
+        monitorar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = tabelaDoServidor.getSelectedRow();
+                String empresa = (String) tabelaDoServidor.getValueAt(row, 0);
+
+                int resposta = JOptionPane.showConfirmDialog(jFrame, "Deseja acompanhar as ações da " + empresa + " ?");
+
+                if (resposta == JOptionPane.YES_OPTION) {
+
+                    try {
+                        servidor.monitorar(cliente, empresa);
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(CliImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
+
         JPanel botoesDoServidor = new JPanel();
         botoesDoServidor.add(comprar);
         botoesDoServidor.add(monitorar);
-                
-        painelDoServidor.add(botoesDoServidor);        
-        
-        
+
+        painelDoServidor.add(botoesDoServidor);
+
+
         /* ------------ Area do Cliente ---------------- */
-        
+
         JPanel painelDoCliente = new JPanel();
         painelDoCliente.setLayout(new BoxLayout(painelDoCliente, BoxLayout.Y_AXIS));
-        
+
         JLabel areaDoCliente = new JLabel("Sua Ações");
         painelDoCliente.add(areaDoCliente);
-        
-        String [] nomeDasColunasCliente = {"Minhas ações", "Número de ações", "Valor"};
-        
-        TableModel tabelaDoClienteModel = new DefaultTableModel(nomeDasColunasCliente, 0);        
+
+        String[] nomeDasColunasCliente = {"Minhas ações", "Número de ações", "Valor"};
+
+        TableModel tabelaDoClienteModel = new DefaultTableModel(nomeDasColunasCliente, 0);
         tabelaDoCliente = new JTable(tabelaDoClienteModel);
         JScrollPane scrollPaneDoCliente = new JScrollPane(tabelaDoCliente);
         tabelaDoCliente.setFillsViewportHeight(true);
-        
-        painelDoCliente.add(scrollPaneDoCliente); 
-        
+
+        painelDoCliente.add(scrollPaneDoCliente);
+
         JButton vender = new JButton("Vender");
         vender.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
-               int row = tabelaDoCliente.getSelectedRow();                
-               String empresa = (String) tabelaDoCliente.getValueAt(row, 1);                
-                
-               String temp = JOptionPane.showInputDialog(jFrame,
+                int row = tabelaDoCliente.getSelectedRow();
+                String empresa = (String) tabelaDoCliente.getValueAt(row, 1);
+
+                String temp = JOptionPane.showInputDialog(jFrame,
                         "Quantas ações da " + empresa + " deseja vender?", null);
-               
-               int quantidade = Integer.parseInt(temp);
-               
-               temp = JOptionPane.showInputDialog(jFrame,
+
+                int quantidade = Integer.parseInt(temp);
+
+                temp = JOptionPane.showInputDialog(jFrame,
                         "Qual o preço das ações a serem vendidas?", null);
-               
-               double preco = Double.parseDouble(temp);
-               
-               int resposta = JOptionPane.showConfirmDialog(jFrame,quantidade + " ações da " + empresa + " para serem vendidas por R$" + preco);
-               
-               if(resposta == JOptionPane.YES_OPTION){
-                   try {
-                       servidor.vender(cliente, empresa, quantidade, preco);
-                   } catch (RemoteException ex) {
-                       Logger.getLogger(CliImpl.class.getName()).log(Level.SEVERE, null, ex);
-                   }
-               }
+
+                double preco = Double.parseDouble(temp);
+
+                int resposta = JOptionPane.showConfirmDialog(jFrame, quantidade + " ações da " + empresa + " para serem vendidas por R$" + preco);
+
+                if (resposta == JOptionPane.YES_OPTION) {
+                    try {
+                        servidor.vender(cliente, empresa, quantidade, preco);
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(CliImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             }
         });
-        
+
         JPanel botoesDoCliente = new JPanel();
         botoesDoCliente.add(vender);
-        
-        painelDoCliente.add(botoesDoCliente);   
-        
-        
+
+        painelDoCliente.add(botoesDoCliente);
+
+
         /* ------------- JFrame ------------ */
-        
+
         jFrame.add(painelDoCliente);
         jFrame.add(painelDoServidor);
         jFrame.pack();
@@ -181,13 +189,12 @@ public class CliImpl extends UnicastRemoteObject implements InterfaceCli{
 
     @Override
     public void notificar(String notificacao, Object[] obj) throws RemoteException {
-        if(notificacao.equals("Ação comprada!")){
+        if (notificacao.equals("Ação comprada!")) {
             String empresa = (String) obj[0];
             int quantidade = (int) obj[1];
             double preco = (double) obj[2];
+
+            System.out.println(notificacao);
         }
     }
-
-    
-    
 }
