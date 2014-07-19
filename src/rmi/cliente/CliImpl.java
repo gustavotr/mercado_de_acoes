@@ -38,11 +38,19 @@ public class CliImpl extends UnicastRemoteObject implements InterfaceCli {
     private JTable tabelaDoCliente;
     private JTable tabelaDoServidor;
     private InterfaceCli cliente;
+    private ArrayList<Empresa> mercadoDeAcoes;
 
     public CliImpl(InterfaceServ servidor) throws RemoteException {
         this.cliente = this;
         this.servidor = servidor;
         monitor = servidor.listar();
+        
+        mercadoDeAcoes = new ArrayList<>();
+
+        mercadoDeAcoes.add(new Empresa("Tim"));
+        mercadoDeAcoes.add(new Empresa("Claro"));
+        mercadoDeAcoes.add(new Empresa("Vivo"));
+        mercadoDeAcoes.add(new Empresa("Oi"));
 
         initComponents();
 
@@ -138,7 +146,7 @@ public class CliImpl extends UnicastRemoteObject implements InterfaceCli {
 
         String[] nomeDasColunasCliente = {"Minhas ações", "Número de ações", "Valor"};
 
-        TableModel tabelaDoClienteModel = new DefaultTableModel(nomeDasColunasCliente, 0);
+        TableModel tabelaDoClienteModel = new DefaultTableModel(listar(), nomeDasColunasCliente);
         tabelaDoCliente = new JTable(tabelaDoClienteModel);
         JScrollPane scrollPaneDoCliente = new JScrollPane(tabelaDoCliente);
         tabelaDoCliente.setFillsViewportHeight(true);
@@ -185,6 +193,19 @@ public class CliImpl extends UnicastRemoteObject implements InterfaceCli {
         jFrame.add(painelDoCliente);
         jFrame.add(painelDoServidor);
         jFrame.pack();
+    }
+    
+     public Object[][] listar(){
+        Object[][] acoes = new Object[mercadoDeAcoes.size()][3];
+
+        for (int i = 0; i < mercadoDeAcoes.size(); i++) {
+            Empresa emp = mercadoDeAcoes.get(i);
+            acoes[i][0] = emp.getNome();
+            acoes[i][1] = emp.getQuantidade();
+            acoes[i][2] = emp.getPrecoMedio();
+        }
+
+        return acoes;
     }
 
     @Override
