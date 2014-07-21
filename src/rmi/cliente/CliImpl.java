@@ -42,8 +42,7 @@ public class CliImpl extends UnicastRemoteObject implements InterfaceCli{
         
     public CliImpl(InterfaceServ servidor) throws RemoteException {
         this.cliente = this;
-        this.servidor = servidor;
-        monitor = servidor.listar();
+        this.servidor = servidor;        
         
         initComponents();
         
@@ -181,11 +180,11 @@ public class CliImpl extends UnicastRemoteObject implements InterfaceCli{
 
     @Override
     public void notificar(String notificacao, Object[] obj) throws RemoteException {
-        if(notificacao.equals("Ação comprada!")){
-            String empresa = (String) obj[0];
-            int quantidade = (int) obj[1];
-            double preco = (double) obj[2];
-        }
+        String empresa = (String) obj[0];
+        double preco = (double) obj[1];
+        
+        System.out.println(notificacao);
+        
     }
 
     
