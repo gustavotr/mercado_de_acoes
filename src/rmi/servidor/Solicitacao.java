@@ -13,14 +13,14 @@ public class Solicitacao {
     
     private InterfaceCli solicitante;
     private String nome;
-    private int tempo;
+    private long tempo;
     private int quantidade;
     private double preco;
 
     public Solicitacao(InterfaceCli solicitante, String nome, int quantidade, int tempo, double preco) {
         this.solicitante = solicitante;
         this.nome = nome;
-        this.tempo = tempo;
+        this.tempo = System.currentTimeMillis() + tempo;
         this.preco = preco;
         this.quantidade = quantidade;
     }
@@ -33,7 +33,7 @@ public class Solicitacao {
         return nome;
     }
 
-    public int getTempo() {
+    public long getTempo() {
         return tempo;
     }
 
@@ -44,5 +44,10 @@ public class Solicitacao {
     public int getQuantidade() {
         return quantidade;
     }
+
+    public void setTempo(int tempo) {
+        this.tempo = tempo;
+    }
+    
     
 }
