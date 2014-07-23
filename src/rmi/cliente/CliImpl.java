@@ -5,6 +5,7 @@
  */
 package rmi.cliente;
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -81,6 +82,7 @@ public class CliImpl extends UnicastRemoteObject implements InterfaceCli {
         TableModel tabelaDeAcoesMonitoradasModel =  new DefaultTableModel(monitor, nomeDasColunas);
         tabelaDeAcoesMonitoradas = new JTable(tabelaDeAcoesMonitoradasModel);
         JScrollPane scrollPaneDeAcoesMonitoradas = new JScrollPane(tabelaDeAcoesMonitoradas);
+        scrollPaneDeAcoesMonitoradas.setPreferredSize(new Dimension(200, 200));
         tabelaDeAcoesMonitoradas.setFillsViewportHeight(true);
 
         painelDoServidor.add(scrollPaneDeAcoesMonitoradas);
@@ -90,6 +92,7 @@ public class CliImpl extends UnicastRemoteObject implements InterfaceCli {
         TableModel tabelaDoServidorModel = new DefaultTableModel(nomeDasColunas, 0);
         tabelaDoServidor = new JTable(tabelaDoServidorModel);
         JScrollPane scrollPaneDoServidor = new JScrollPane(tabelaDoServidor);
+        scrollPaneDoServidor.setPreferredSize(new Dimension(200, 200));
         tabelaDoServidor.setFillsViewportHeight(true);
 
         painelDoServidor.add(scrollPaneDoServidor);
@@ -110,12 +113,17 @@ public class CliImpl extends UnicastRemoteObject implements InterfaceCli {
                         "Quanto deseja pagar por ação da ''" + empresa + "''?", null);
 
                 double preco = Double.parseDouble(temp);
+                
+                temp = JOptionPane.showInputDialog(jFrame,
+                        "Por quanto tempo deseja manter a requisição?", null);
+                
+                int tempo = Integer.parseInt(temp);
 
-                int resposta = JOptionPane.showConfirmDialog(jFrame, "Compra " + quantidade + " ações da ''" + empresa + "'' por R$" + preco);
+                int resposta = JOptionPane.showConfirmDialog(jFrame, "Comprar " + quantidade + " ações da ''" + empresa + "'' por R$" + preco);
 
                 if (resposta == JOptionPane.YES_OPTION) {
                     try {
-                        servidor.comprar(cliente, empresa, quantidade, 50000, preco);
+                        servidor.comprar(cliente, empresa, quantidade, tempo, preco);
                     } catch (RemoteException ex) {
                         Logger.getLogger(CliImpl.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -177,6 +185,7 @@ public class CliImpl extends UnicastRemoteObject implements InterfaceCli {
         TableModel tabelaDoClienteModel = new DefaultTableModel(listar(), nomeDasColunasCliente);
         tabelaDoCliente = new JTable(tabelaDoClienteModel);
         JScrollPane scrollPaneDoCliente = new JScrollPane(tabelaDoCliente);
+        scrollPaneDoCliente.setPreferredSize(new Dimension(200, 400));
         tabelaDoCliente.setFillsViewportHeight(true);
 
         painelDoCliente.add(scrollPaneDoCliente);
@@ -194,12 +203,17 @@ public class CliImpl extends UnicastRemoteObject implements InterfaceCli {
                         "Por quanto deseja vender uma ação da ''" + empresa + "'' ?", null);
 
                 double preco = Double.parseDouble(temp);
+                
+                temp = JOptionPane.showInputDialog(jFrame,
+                        "Por quanto tempo deseja manter a requisição?", null);
+                
+                int tempo = Integer.parseInt(temp);
 
                 int resposta = JOptionPane.showConfirmDialog(jFrame, quantidade + "  ação da " + empresa + " para serem vendidas por R$" + preco);
 
                 if (resposta == JOptionPane.YES_OPTION) {
                     try {
-                        servidor.vender(cliente, empresa, quantidade, 50000, preco);
+                        servidor.vender(cliente, empresa, quantidade, tempo, preco);
                     } catch (RemoteException ex) {
                         Logger.getLogger(CliImpl.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -235,11 +249,13 @@ public class CliImpl extends UnicastRemoteObject implements InterfaceCli {
 
     @Override
     public void notificar(String notificacao, Object[] obj) throws RemoteException {
-        if(notificacao.equals("monitorar")){
-            DefaultTableModel model = (DefaultTableModel) tabelaDeAcoesMonitoradas.getModel();
+        if(notificacao.equals("monitorar")){            
+            String[] nomeDasColunas = {"Empresa", "Interece", "Valor", "Quantidade"};
+            DefaultTableModel model = new DefaultTableModel(nomeDasColunas,0);
             for(Object row: obj){
                 model.addRow((Object[]) row);
             }
+            tabelaDeAcoesMonitoradas.setModel(model);
         }  
         if(notificacao.equals("compra efetuada")){
             String empresa = (String) obj[0];
